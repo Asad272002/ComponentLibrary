@@ -1,211 +1,189 @@
-import {
-  AppWindow,
-  Blend,
-  Boxes,
-  Layers3,
-  LayoutGrid,
-  MenuSquare,
-  PanelLeftOpen,
-  ScanSearch,
-  Sparkles,
-  Stars,
-  WandSparkles,
-} from "lucide-react";
+"use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { Bike, Compass, Search, Sparkles, Stars } from "lucide-react";
+
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
-type SidebarSection = {
-  title: string;
-  items: {
-    label: string;
-    count: number;
-    active?: boolean;
-  }[];
+export type ComponentId =
+  | "smart-animate-text"
+  | "orbital-image-wheel"
+  | "card-stack-scroll"
+  | "morphing-text"
+  | "tilt-card"
+  | "inverted-perspective-carousel"
+  | "infinite-slider"
+  | "hero-sections"
+  | "feature-grids"
+  | "spec-cards";
+
+export type ComponentOption = {
+  id: ComponentId;
+  label: string;
+  description: string;
+  group: "Featured" | "Concepts";
+  status: "Live" | "Soon";
+  metric: string;
 };
 
-const sections: SidebarSection[] = [
+type LibrarySidebarProps = {
+  activeId: ComponentId | null;
+  options: ComponentOption[];
+  onSelect: (id: ComponentId) => void;
+  query: string;
+  onQueryChange: (value: string) => void;
+};
+
+const groups = [
   {
-    title: "Discover",
-    items: [
-      { label: "Featured", count: 18, active: true },
-      { label: "New this week", count: 7 },
-      { label: "Most saved", count: 24 },
-    ],
+    title: "Featured",
+    icon: Sparkles,
   },
   {
-    title: "Components",
-    items: [
-      { label: "Buttons", count: 26 },
-      { label: "Cards", count: 34 },
-      { label: "Hero sections", count: 12 },
-      { label: "Navigation", count: 16 },
-      { label: "Pricing", count: 9 },
-      { label: "Testimonials", count: 11 },
-      { label: "Forms", count: 14 },
-      { label: "Backgrounds", count: 10 },
-    ],
-  },
-  {
-    title: "Motion Lab",
-    items: [
-      { label: "Hover reveals", count: 8 },
-      { label: "Scroll transforms", count: 5 },
-      { label: "Text animations", count: 9 },
-      { label: "Micro interactions", count: 17 },
-    ],
-  },
-  {
-    title: "Collections",
-    items: [
-      { label: "SaaS", count: 13 },
-      { label: "Dashboards", count: 8 },
-      { label: "Portfolios", count: 6 },
-      { label: "Ecommerce", count: 7 },
-    ],
+    title: "Concepts",
+    icon: Compass,
   },
 ];
 
-const sectionIcons = [Sparkles, LayoutGrid, WandSparkles, Layers3];
-
-export function LibrarySidebar() {
+export function LibrarySidebar({
+  activeId,
+  options,
+  onSelect,
+  query,
+  onQueryChange,
+}: LibrarySidebarProps) {
   return (
-    <aside className="relative overflow-hidden rounded-[28px] border border-white/60 bg-white/80 p-4 shadow-[0_20px_70px_rgba(15,23,42,0.08)] backdrop-blur xl:sticky xl:top-6 xl:h-[calc(100vh-3rem)]">
-      <div className="absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.22),_transparent_68%)]" />
-
-      <div className="relative flex h-full flex-col gap-4">
-        <div className="flex items-center justify-between rounded-[22px] bg-slate-950 px-4 py-3 text-white">
-          <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-2xl bg-white/10">
-              <Blend className="size-5" />
-            </div>
-            <div>
-              <p className="font-heading text-sm font-semibold tracking-wide">
-                Motionboard
-              </p>
-              <p className="text-xs text-white/60">Component browser</p>
-            </div>
+    <aside className="relative h-fit overflow-hidden rounded-[32px] border border-white/10 bg-white/6 shadow-[0_24px_80px_rgba(2,8,23,0.55)] backdrop-blur-2xl lg:sticky lg:top-4 lg:self-start lg:max-h-[calc(100vh-2rem)]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.12),transparent_28%),radial-gradient(circle_at_80%_20%,rgba(168,85,247,0.14),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]" />
+      <div className="relative flex h-full flex-col p-5 lg:max-h-[calc(100vh-2rem)]">
+        <div className="flex items-start gap-3">
+          <div className="flex size-11 items-center justify-center rounded-2xl bg-white text-slate-950 shadow-[0_12px_30px_rgba(255,255,255,0.22)]">
+            <Bike className="size-5" />
           </div>
-          <Badge className="bg-amber-300 text-slate-950 hover:bg-amber-300">
-            Beta
-          </Badge>
-        </div>
-
-        <div className="rounded-[22px] border border-slate-200/80 bg-white/75 p-3">
-          <div className="relative">
-            <ScanSearch className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-slate-400" />
-            <Input
-              placeholder="Search components"
-              className="h-11 rounded-2xl border-slate-200 bg-slate-50 pl-9 shadow-none"
-            />
-          </div>
-          <div className="mt-3 flex gap-2">
-            <Button variant="outline" size="sm" className="flex-1 rounded-xl">
-              <Boxes className="size-4" />
-              Browse
-            </Button>
-            <Button size="sm" className="flex-1 rounded-xl bg-slate-950">
-              <Stars className="size-4" />
-              Random
-            </Button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-2">
-          <div className="rounded-[20px] border border-slate-200/80 bg-white/70 p-3">
-            <p className="text-xs text-slate-500">Total</p>
-            <p className="mt-2 font-heading text-xl font-semibold text-slate-950">
-              146
+          <div>
+            <p className="font-[family:var(--font-heading)] text-lg font-semibold tracking-tight text-white">
+              Motion Atelier
             </p>
-          </div>
-          <div className="rounded-[20px] border border-slate-200/80 bg-white/70 p-3">
-            <p className="text-xs text-slate-500">Animated</p>
-            <p className="mt-2 font-heading text-xl font-semibold text-slate-950">
-              42
-            </p>
-          </div>
-          <div className="rounded-[20px] border border-slate-200/80 bg-white/70 p-3">
-            <p className="text-xs text-slate-500">Free</p>
-            <p className="mt-2 font-heading text-xl font-semibold text-slate-950">
-              118
+            <p className="mt-1 text-sm text-white/55">
+              Component preview hub
             </p>
           </div>
         </div>
 
-        <Separator />
+        <div className="mt-5 grid grid-cols-2 gap-3">
+          <div className="rounded-2xl border border-white/10 bg-white/6 p-3">
+            <p className="text-[11px] tracking-[0.22em] text-white/35 uppercase">Live</p>
+            <p className="mt-2 text-2xl font-semibold text-white">
+              {options.filter((option) => option.status === "Live").length}
+            </p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/6 p-3">
+            <p className="text-[11px] tracking-[0.22em] text-white/35 uppercase">Mood</p>
+            <p className="mt-2 text-2xl font-semibold text-white">A+</p>
+          </div>
+        </div>
 
-        <nav className="flex-1 space-y-5 overflow-y-auto pr-1">
-          {sections.map((section, index) => {
-            const Icon = sectionIcons[index];
+        <div className="relative mt-5">
+          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-white/35" />
+          <Input
+            value={query}
+            onChange={(event) => onQueryChange(event.target.value)}
+            placeholder="Search components"
+            className="h-11 rounded-2xl border-white/10 bg-white/6 pl-9 text-white placeholder:text-white/35 shadow-none"
+          />
+        </div>
+
+        <Separator className="my-5 bg-white/10" />
+
+        <nav className="flex-1 space-y-6 overflow-y-auto pr-1 lg:min-h-0">
+          {groups.map((group) => {
+            const Icon = group.icon;
+            const items = options.filter((option) => option.group === group.title);
+
+            if (!items.length) {
+              return null;
+            }
 
             return (
-              <div key={section.title}>
-                <div className="mb-3 flex items-center gap-2 px-1">
-                  <Icon className="size-4 text-slate-500" />
-                  <p className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
-                    {section.title}
+              <div key={group.title}>
+                <div className="mb-2 flex items-center gap-2">
+                  <Icon className="size-4 text-cyan-300" />
+                  <p className="text-xs font-medium tracking-[0.24em] text-white/35 uppercase">
+                    {group.title}
                   </p>
                 </div>
 
-                <div className="space-y-1">
-                  {section.items.map((item) => (
-                    <button
-                      key={item.label}
-                      className={cn(
-                        "flex w-full items-center justify-between rounded-2xl px-3 py-2.5 text-left text-sm transition",
-                        item.active
-                          ? "bg-slate-950 text-white shadow-lg shadow-slate-950/10"
-                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
-                      )}
-                    >
-                      <span>{item.label}</span>
-                      <span
+                <div className="space-y-2">
+                  {items.map((item) => {
+                    const isActive = item.id === activeId;
+
+                    return (
+                      <motion.button
+                        key={item.id}
+                        type="button"
+                        onClick={() => onSelect(item.id)}
+                        whileHover={{ y: -2 }}
+                        whileTap={{ scale: 0.99 }}
                         className={cn(
-                          "rounded-full px-2 py-0.5 text-xs",
-                          item.active
-                            ? "bg-white/10 text-white/80"
-                            : "bg-slate-100 text-slate-500"
+                          "block w-full rounded-[22px] border px-3 py-3 text-left transition",
+                          isActive
+                            ? "border-cyan-300/40 bg-white/12 text-white shadow-[0_12px_40px_rgba(34,211,238,0.18)]"
+                            : "border-white/10 bg-white/5 text-white/75 hover:border-white/20 hover:bg-white/8"
                         )}
                       >
-                        {item.count}
-                      </span>
-                    </button>
-                  ))}
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-medium">{item.label}</p>
+                            <p
+                              className={cn(
+                                "mt-1 text-xs leading-5",
+                                isActive ? "text-white/70" : "text-white/45"
+                              )}
+                            >
+                              {item.description}
+                            </p>
+                          </div>
+                          <span
+                            className={cn(
+                              "rounded-full px-2 py-1 text-[10px] font-medium tracking-[0.18em] uppercase",
+                              item.status === "Live"
+                                ? "bg-emerald-400/12 text-emerald-200"
+                                : "bg-white/8 text-white/50"
+                            )}
+                          >
+                            {item.status}
+                          </span>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between">
+                          <span className="text-xs text-white/35">{item.metric}</span>
+                          {isActive ? (
+                            <span className="inline-flex size-7 items-center justify-center rounded-full bg-white text-slate-950">
+                              <Stars className="size-3.5" />
+                            </span>
+                          ) : null}
+                        </div>
+                      </motion.button>
+                    );
+                  })}
                 </div>
               </div>
             );
           })}
         </nav>
 
-        <div className="rounded-[24px] bg-[linear-gradient(135deg,#0f172a_0%,#1e293b_55%,#334155_100%)] p-4 text-white">
-          <div className="flex items-center justify-between">
-            <p className="font-heading text-base font-semibold">Starter pack</p>
-            <PanelLeftOpen className="size-4 text-white/70" />
-          </div>
-          <p className="mt-2 text-sm leading-6 text-white/70">
-            A ready-made base for docs, previews, categories, and future component pages.
-          </p>
-          <Button
-            size="sm"
-            className="mt-4 w-full rounded-xl bg-amber-300 text-slate-950 hover:bg-amber-200"
-          >
-            <AppWindow className="size-4" />
-            Open workspace
-          </Button>
-        </div>
-
-        <div className="flex items-center gap-3 rounded-[20px] border border-slate-200/80 bg-white/70 px-3 py-2.5">
-          <div className="flex size-10 items-center justify-center rounded-2xl bg-slate-950 text-white">
-            <MenuSquare className="size-4" />
-          </div>
-          <div>
-            <p className="text-sm font-medium text-slate-950">Layout ready</p>
-            <p className="text-xs text-slate-500">
-              Tell me the next component section and I’ll slot it in.
-            </p>
+        <div className="rounded-[24px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0.04))] p-4">
+          <p className="text-sm font-medium text-white">Preview Flow</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {["Click", "Preview", "Compare", "Refine"].map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-white/10 bg-white/8 px-3 py-1 text-[11px] tracking-[0.16em] text-white/60 uppercase"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         </div>
       </div>

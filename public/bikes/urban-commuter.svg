@@ -1,0 +1,15 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="48" fill="#F6F6F4"/>
+  <circle cx="330" cy="620" r="120" stroke="#111111" stroke-width="24"/>
+  <circle cx="840" cy="620" r="120" stroke="#111111" stroke-width="24"/>
+  <path d="M330 620L470 430H650L840 620" stroke="#111111" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M470 430L560 620L650 430" stroke="#111111" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M650 430L740 340" stroke="#111111" stroke-width="28" stroke-linecap="round"/>
+  <path d="M455 405L520 360" stroke="#111111" stroke-width="24" stroke-linecap="round"/>
+  <path d="M715 325H805" stroke="#111111" stroke-width="24" stroke-linecap="round"/>
+  <path d="M250 620H185" stroke="#111111" stroke-width="24" stroke-linecap="round"/>
+  <path d="M840 620H905" stroke="#111111" stroke-width="24" stroke-linecap="round"/>
+  <rect x="96" y="96" width="250" height="52" rx="26" fill="#111111"/>
+  <text x="221" y="130" text-anchor="middle" fill="#F6F6F4" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Urban Commuter</text>
+  <text x="96" y="220" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="700">Fast city geometry.</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="48" fill="#111827"/>
+  <circle cx="340" cy="620" r="120" stroke="#F8FAFC" stroke-width="24"/>
+  <circle cx="850" cy="620" r="120" stroke="#F8FAFC" stroke-width="24"/>
+  <path d="M340 620L490 430H650L850 620" stroke="#F8FAFC" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M490 430L575 620L650 430" stroke="#F8FAFC" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M650 430L745 340" stroke="#F8FAFC" stroke-width="28" stroke-linecap="round"/>
+  <path d="M470 402L530 360" stroke="#F8FAFC" stroke-width="24" stroke-linecap="round"/>
+  <path d="M720 330H810" stroke="#F8FAFC" stroke-width="24" stroke-linecap="round"/>
+  <path d="M565 518L690 518" stroke="#38BDF8" stroke-width="16" stroke-linecap="round"/>
+  <path d="M605 468L710 468" stroke="#38BDF8" stroke-width="16" stroke-linecap="round"/>
+  <rect x="96" y="96" width="262" height="52" rx="26" fill="#F8FAFC"/>
+  <text x="227" y="130" text-anchor="middle" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Midnight Carbon</text>
+  <text x="96" y="220" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="700">Dark frame, sharp speed.</text>
+</svg>
