@@ -13,13 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 const spaceGrotesk = Space_Grotesk({
-  variable: "--font-heading",
+  variable: "--font-display",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Motionboard UI",
-  description: "A polished component library browser for animated and reusable UI.",
+  title: "Motion Atelier",
+  description: "A sleek, interactive, animated UI showcase with premium motion and 3D accents.",
 };
 
 export default function RootLayout({
@@ -32,7 +32,9 @@ export default function RootLayout({
       lang="en"
       className={`${manrope.variable} ${geistMono.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        {children}
+      </body>
     </html>
   );
 }
