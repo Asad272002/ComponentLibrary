@@ -1,17 +1,17 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  ArrowRight,
   ArrowUpRight,
   Bike,
   ChevronLeft,
   CircleDashed,
-  Compass,
   Layers3,
-  Sparkles,
+  PanelLeftOpen,
   WandSparkles,
   Zap,
 } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   siFigma,
   siFramer,
@@ -28,8 +28,10 @@ import {
   type ComponentId,
   type ComponentOption,
 } from "@/components/library-sidebar";
+import { LogoLoader } from "@/components/logo-loader";
 import { CardStackScroll } from "@/components/showcase/card-stack-scroll";
 import { InvertedPerspectiveCarousel } from "@/components/showcase/inverted-perspective-carousel";
+import { ShowcaseScene } from "@/components/showcase-scene";
 import { OrbitalImageWheel } from "@/components/unlumen-ui/orbital-image-wheel";
 import { SmartAnimateText } from "@/components/unlumen-ui/smart-animate-text";
 import { TiltCard } from "@/components/unlumen-ui/tilt-card";
@@ -39,6 +41,14 @@ import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { MorphingText } from "@/components/ui/morphing-text";
 
 const components: ComponentOption[] = [
+  {
+    id: "logo-loader",
+    label: "Logo Loader",
+    description: "Automotive-style loading overlay with premium 3D motion.",
+    group: "Featured",
+    status: "Live",
+    metric: "Loader preview",
+  },
   {
     id: "smart-animate-text",
     label: "Pulse Text",
@@ -186,16 +196,16 @@ const comingSoonText: Record<ComingSoonId, string> = {
 };
 
 const morphingTexts = ["Hello", "World", "Motion", "Library", "Showcase"];
-const landingMorphTexts = ["Browse", "Preview", "Animate", "Launch"];
+const landingMorphTexts = ["Motion", "Glass", "Depth", "Preview"];
 
 const companyLogos = [
-  { label: "Vercel", href: "https://vercel.com", iconPath: siVercel.path, iconColor: "#ffffff" },
-  { label: "Framer", href: "https://framer.com", iconPath: siFramer.path, iconColor: `#${siFramer.hex}` },
+  { label: "Vercel", href: "https://vercel.com", iconPath: siVercel.path, iconColor: "#1f2937" },
+  { label: "Framer", href: "https://framer.com", iconPath: siFramer.path, iconColor: "#1f2937" },
   { label: "Supabase", href: "https://supabase.com", iconPath: siSupabase.path, iconColor: `#${siSupabase.hex}` },
   { label: "Stripe", href: "https://stripe.com", iconPath: siStripe.path, iconColor: `#${siStripe.hex}` },
   { label: "Figma", href: "https://figma.com", iconPath: siFigma.path, iconColor: `#${siFigma.hex}` },
-  { label: "GitHub", href: "https://github.com", iconPath: siGithub.path, iconColor: "#ffffff" },
-  { label: "Notion", href: "https://notion.so", iconPath: siNotion.path, iconColor: "#ffffff" },
+  { label: "GitHub", href: "https://github.com", iconPath: siGithub.path, iconColor: "#1f2937" },
+  { label: "Notion", href: "https://notion.so", iconPath: siNotion.path, iconColor: "#1f2937" },
   { label: "Shopify", href: "https://shopify.com", iconPath: siShopify.path, iconColor: `#${siShopify.hex}` },
 ] as const;
 
@@ -222,220 +232,345 @@ const stackProjects = [
     title: "Project 4",
     subtitle: "Editorial layout for launches, case studies, and feature drops.",
     src: bikeImages[3].src,
-    accent: "linear-gradient(135deg, rgba(244,114,182,0.2), rgba(15,23,42,0.18))",
+    accent: "linear-gradient(135deg, rgba(14,165,233,0.2), rgba(15,23,42,0.18))",
   },
 ];
 
 const landingHighlights = [
-  { label: "Motion-first", value: "Fluid transitions" },
-  { label: "Preview-ready", value: "Focused demos" },
-  { label: "Design system", value: "Modern catalog" },
+  { label: "Visual tone", value: "Glassmorphism" },
+  { label: "Core", value: "Live previews" },
+  { label: "Experience", value: "3D motion" },
 ] as const;
+
+function LogoLoaderPreview() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [cycleKey, setCycleKey] = useState(0);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [cycleKey]);
+
+  return (
+    <motion.section
+      key="logo-loader"
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -18 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="space-y-4"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[28px] border border-white/10 bg-white/6 p-5">
+        <div>
+          <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Logo loader</p>
+          <p className="mt-2 text-sm text-white/55">
+            Preview the loading overlay, then watch it hand off into the main screen.
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          className="h-11 rounded-full border-white/15 bg-white/6 px-5 text-white hover:bg-white/10"
+          onClick={() => {
+            setIsLoading(true);
+            setCycleKey((value) => value + 1);
+          }}
+        >
+          Replay loader
+        </Button>
+      </div>
+
+      <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(180deg,rgba(4,8,18,0.98),rgba(8,12,22,0.94))] shadow-[0_24px_80px_rgba(2,8,23,0.45)]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.14),transparent_24%),radial-gradient(circle_at_82%_12%,rgba(168,85,247,0.16),transparent_26%)]" />
+
+        <motion.div
+          animate={{
+            scale: isLoading ? 0.975 : 1,
+            filter: isLoading ? "blur(5px)" : "blur(0px)",
+            opacity: isLoading ? 0.45 : 1,
+          }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="relative z-0 min-h-[620px] p-5 md:p-7"
+        >
+          <div className="rounded-[26px] border border-white/10 bg-white/6 p-4 md:p-5">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Main screen mock</p>
+                <h3 className="mt-2 font-[family:var(--font-heading)] text-3xl font-semibold text-white">
+                  Automotive UI system
+                </h3>
+              </div>
+              <div className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-xs text-emerald-200">
+                Ready
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-4 lg:grid-cols-[1.25fr_0.9fr]">
+              <div className="rounded-[24px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-5">
+                <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Hero state</p>
+                <div className="mt-5">
+                  <MorphingText
+                    texts={["Loaded", "Polished", "Interactive", "Premium"]}
+                    className="justify-start font-[family:var(--font-heading)] text-5xl font-semibold tracking-tight text-white md:text-6xl"
+                  />
+                </div>
+                <p className="mt-4 max-w-xl text-sm leading-6 text-white/55">
+                  A simple entry preview showing how the loader clears and reveals the destination screen.
+                </p>
+                <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                  {[
+                    { label: "Overlay", value: "Full screen" },
+                    { label: "Timing", value: "2.5s" },
+                    { label: "Style", value: "3D luxury" },
+                  ].map((item) => (
+                    <div key={item.label} className="rounded-[20px] border border-white/10 bg-black/10 p-4">
+                      <p className="text-[11px] tracking-[0.22em] text-white/35 uppercase">{item.label}</p>
+                      <p className="mt-3 text-lg font-medium text-white">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="rounded-[24px] border border-white/10 bg-white/6 p-5">
+                  <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Preview notes</p>
+                  <div className="mt-4 space-y-3">
+                    {[
+                      "Uses /logo.svg from public.",
+                      "Respects reduced motion.",
+                      "Can run fullscreen or inline inside previews.",
+                    ].map((item) => (
+                      <div
+                        key={item}
+                        className="rounded-2xl border border-white/10 bg-black/10 px-4 py-3 text-sm text-white/58"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-[24px] border border-white/10 bg-white/6 p-5">
+                  <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Status</p>
+                  <div className="mt-4 flex items-center gap-3">
+                    <span
+                      className={
+                        isLoading
+                          ? "inline-flex size-3 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.7)]"
+                          : "inline-flex size-3 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.6)]"
+                      }
+                    />
+                    <p className="text-sm text-white/65">
+                      {isLoading ? "Loader active" : "Preview screen revealed"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <AnimatePresence initial={false}>
+          {isLoading ? (
+            <motion.div
+              key={`loader-overlay-${cycleKey}`}
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              className="absolute inset-0 z-20"
+            >
+              <LogoLoader fullscreen={false} />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </div>
+    </motion.section>
+  );
+}
 
 function LandingHub({
   components,
   onSelect,
+  onOpenSidebar,
 }: {
   components: ComponentOption[];
   onSelect: (id: ComponentId) => void;
+  onOpenSidebar: () => void;
 }) {
+  const liveComponents = components.filter((component) => component.status === "Live");
+  const featuredCards = liveComponents.slice(0, 6);
+
   return (
-    <section className="relative overflow-hidden rounded-[34px] border border-white/10 bg-[linear-gradient(145deg,rgba(9,14,26,0.96),rgba(15,23,42,0.82))] p-6 shadow-[0_30px_120px_rgba(2,8,23,0.55)] backdrop-blur-2xl md:p-8">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(103,232,249,0.12),transparent_28%),radial-gradient(circle_at_90%_10%,rgba(168,85,247,0.15),transparent_24%)]" />
-      <div className="relative space-y-8">
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-white/10 bg-white/6 px-4 py-3">
+    <section className="relative overflow-hidden rounded-[40px] border border-white/40 bg-white/35 shadow-[0_40px_120px_rgba(124,58,237,0.18)] backdrop-blur-2xl">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(79,70,229,0.20),transparent_38%),radial-gradient(circle_at_88%_22%,rgba(14,165,233,0.20),transparent_36%),radial-gradient(circle_at_78%_88%,rgba(217,119,6,0.16),transparent_40%),radial-gradient(circle_at_18%_88%,rgba(124,58,237,0.16),transparent_36%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:64px_64px] [mask-image:radial-gradient(circle_at_30%_30%,black,transparent_72%)]" />
+
+      <div className="relative flex min-h-[calc(100vh-2rem)] flex-col px-5 py-5 md:px-8 md:py-8">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[26px] border border-white/60 bg-white/55 px-4 py-3 shadow-[0_10px_30px_rgba(124,58,237,0.08)] backdrop-blur-xl">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-2xl bg-white text-slate-950">
+            <div className="flex size-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-500 to-sky-500 text-white shadow-[0_10px_30px_rgba(79,70,229,0.35)]">
               <Layers3 className="size-4" />
             </div>
             <div>
-              <p className="font-[family:var(--font-heading)] text-lg font-semibold text-white">
-                Motion Atelier
-              </p>
-              <p className="text-sm text-white/45">Animated UI Library</p>
+              <p className="font-[family:var(--font-heading)] text-lg font-semibold text-slate-900">Motion Atelier</p>
+              <p className="text-sm text-slate-500">Interactive UI library</p>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {["All", "Motion", "Gallery", "Text", "Commerce"].map((chip) => (
-              <span
-                key={chip}
-                className="rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-xs text-white/60"
-              >
-                {chip}
-              </span>
-            ))}
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={onOpenSidebar}
+              className="inline-flex h-11 items-center gap-2 rounded-full border border-white/70 bg-white/70 px-4 text-sm text-slate-700 shadow-[0_8px_24px_rgba(124,58,237,0.08)] backdrop-blur-xl transition hover:bg-white/90 lg:hidden"
+            >
+              <PanelLeftOpen className="size-4" />
+              Open library
+            </button>
+            <span className="rounded-full border border-white/70 bg-white/70 px-3 py-2 text-xs tracking-[0.2em] text-slate-600 uppercase">
+              {String(liveComponents.length).padStart(2, "0")} live previews
+            </span>
           </div>
         </div>
 
-        <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_560px] xl:items-center">
-          <div>
-            <Badge className="rounded-full bg-white text-slate-950">
-              Browse components
+        <div className="grid flex-1 gap-8 py-8 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] xl:items-center xl:gap-10">
+          <div className="max-w-3xl">
+            <Badge className="rounded-full border border-violet-200/80 bg-white/70 px-4 py-1.5 text-violet-700 shadow-[0_10px_30px_rgba(124,58,237,0.12)]">
+              <span className="mr-2 inline-block size-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-sky-500" />
+              v2.0 · Glass Edition
             </Badge>
-            <div className="mt-5 max-w-3xl">
-              <p className="text-sm tracking-[0.28em] text-cyan-200 uppercase">Motion Atelier</p>
-              <div className="mt-4">
-                <MorphingText
-                  texts={landingMorphTexts}
-                  className="justify-start font-[family:var(--font-heading)] text-6xl font-semibold tracking-tight text-white md:text-7xl"
-                />
-              </div>
-              <h1 className="mt-3 font-[family:var(--font-heading)] text-4xl font-semibold tracking-tight text-white md:text-5xl">
-                UI components for modern interactive interfaces.
-              </h1>
+            <div className="mt-6">
+              <MorphingText
+                texts={landingMorphTexts}
+                className="justify-start bg-gradient-to-r from-slate-900 via-violet-700 to-slate-900 bg-clip-text font-[family:var(--font-heading)] text-6xl font-semibold tracking-tight text-transparent md:text-7xl xl:text-8xl"
+              />
             </div>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-white/58">
-              Explore interaction-ready components, open a preview, and inspect each piece like a real design system library.
+            <h1 className="mt-4 max-w-4xl font-[family:var(--font-heading)] text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl xl:text-6xl">
+              A modern component library for cinematic 3D visuals, glassmorphism, and lively motion.
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
+              Ship interfaces users feel. Browse the catalog, pick a component, and watch it come alive in a focused preview.
             </p>
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button
+                className="h-12 rounded-full bg-slate-900 px-5 text-white shadow-[0_18px_40px_rgba(15,23,42,0.25)] hover:bg-slate-800"
+                onClick={() => onSelect(featuredCards[0]?.id ?? "logo-loader")}
+              >
+                Get started
+                <ArrowRight className="size-4" />
+              </Button>
+              <Button
+                variant="outline"
+                className="h-12 rounded-full border-white/70 bg-white/70 px-5 text-slate-800 shadow-[0_10px_30px_rgba(124,58,237,0.08)] backdrop-blur-xl hover:bg-white/90"
+                onClick={onOpenSidebar}
+              >
+                <PanelLeftOpen className="size-4" />
+                Browse library
+              </Button>
+            </div>
+
+            <div className="mt-10 grid gap-3 sm:grid-cols-3">
               {[
                 { label: "Components", value: String(components.length).padStart(2, "0") },
-                {
-                  label: "Live previews",
-                  value: String(
-                    components.filter((component) => component.status === "Live").length
-                  ).padStart(2, "0"),
-                },
-                { label: "Design tone", value: "Sleek" },
+                { label: "Live previews", value: String(liveComponents.length).padStart(2, "0") },
+                { label: "Theme", value: "Glass" },
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-[24px] border border-white/10 bg-white/6 p-4 backdrop-blur-xl"
+                  className="rounded-[24px] border border-white/70 bg-white/65 p-4 shadow-[0_18px_40px_rgba(124,58,237,0.06)] backdrop-blur-xl"
                 >
-                  <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">{item.label}</p>
-                  <p className="mt-3 text-2xl font-semibold text-white">{item.value}</p>
+                  <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">{item.label}</p>
+                  <p className="mt-3 text-2xl font-semibold text-slate-900">{item.value}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(103,232,249,0.12),transparent_30%),linear-gradient(180deg,rgba(6,11,23,0.98),rgba(10,15,29,0.95))] p-6">
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),transparent_30%,rgba(168,85,247,0.05))]" />
-            <div className="relative flex items-start justify-between gap-4">
-              <div>
-                <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Featured motion</p>
-                <p className="mt-2 text-2xl font-semibold text-white">Built from your own components</p>
-              </div>
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-white/8 text-cyan-200">
-                <Compass className="size-5" />
-              </div>
-            </div>
-
-            <div className="relative mt-8 space-y-4">
-              <div className="rounded-[26px] border border-white/10 bg-white/6 p-5">
-                <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Live text motion</p>
-                <div className="mt-5 flex min-h-28 items-center justify-start">
-                  <SmartAnimateText
-                    value="Library"
-                    className="text-6xl font-semibold tracking-tight text-white md:text-7xl"
-                    digitClassName="font-[family:var(--font-heading)]"
-                    direction="up"
-                    enterBlur={28}
-                    enterScale={0.82}
-                  />
+          <div className="relative">
+            <div className="absolute -inset-6 -z-10 rounded-[44px] bg-[radial-gradient(circle,rgba(124,58,237,0.22),transparent_60%)] blur-3xl" />
+            <div className="rounded-[34px] border border-white/70 bg-white/55 p-4 shadow-[0_30px_80px_rgba(124,58,237,0.18)] backdrop-blur-2xl">
+              <div className="mb-4 flex items-center justify-between gap-3 rounded-[22px] border border-white/70 bg-white/60 px-4 py-3">
+                <div>
+                  <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Centerpiece</p>
+                  <p className="mt-1 text-lg font-semibold text-slate-900">3D brand motion</p>
+                </div>
+                <div className="rounded-full border border-white/70 bg-gradient-to-r from-indigo-500/15 to-sky-500/15 px-3 py-1.5 text-xs text-indigo-700">
+                  built with three.js
                 </div>
               </div>
 
-              <div className="rounded-[26px] border border-white/10 bg-white/6 p-5">
-                <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Rotating headline</p>
-                <div className="mt-5 min-h-24">
-                  <MorphingText
-                    texts={["Elegant", "Interactive", "Modern", "Organized"]}
-                    className="justify-start font-[family:var(--font-heading)] text-5xl font-semibold tracking-tight text-white md:text-6xl"
-                  />
-                </div>
-              </div>
+              <ShowcaseScene />
 
-              <div className="grid gap-3 sm:grid-cols-3">
-                {landingHighlights.map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-[22px] border border-white/10 bg-black/12 px-4 py-4"
-                  >
-                    <p className="text-[11px] tracking-[0.22em] text-white/35 uppercase">{item.label}</p>
-                    <p className="mt-3 text-lg font-medium text-white">{item.value}</p>
+              <div className="mt-4 grid gap-3 md:grid-cols-[1.2fr_0.8fr]">
+                <div className="rounded-[24px] border border-white/70 bg-white/65 p-4 shadow-[0_10px_30px_rgba(124,58,237,0.06)]">
+                  <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Animated intent</p>
+                  <div className="mt-4 min-h-24">
+                    <MorphingText
+                      texts={["Browse fast", "Preview clean", "Feel depth", "Stay focused"]}
+                      className="justify-start bg-gradient-to-r from-slate-900 via-indigo-700 to-slate-900 bg-clip-text font-[family:var(--font-heading)] text-4xl font-semibold tracking-tight text-transparent md:text-5xl"
+                    />
                   </div>
-                ))}
+                </div>
+                <div className="grid gap-3">
+                  {landingHighlights.map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-[22px] border border-white/70 bg-white/65 px-4 py-4 shadow-[0_10px_30px_rgba(124,58,237,0.06)]"
+                    >
+                      <p className="text-[11px] tracking-[0.22em] text-slate-500 uppercase">{item.label}</p>
+                      <p className="mt-2 text-lg font-medium text-slate-900">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px]">
-          <div className="grid gap-4 md:grid-cols-2">
-            {components.map((component, index) => (
+        <div className="grid gap-4 border-t border-white/50 pt-6 xl:grid-cols-[0.72fr_1.28fr]">
+          <div className="rounded-[28px] border border-white/70 bg-white/60 p-5 shadow-[0_18px_40px_rgba(124,58,237,0.08)] backdrop-blur-xl">
+            <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Why this page</p>
+            <h2 className="mt-3 font-[family:var(--font-heading)] text-3xl font-semibold text-slate-900">
+              Less noise, faster browsing.
+            </h2>
+            <p className="mt-3 max-w-lg text-sm leading-6 text-slate-600">
+              The landing now reads like a proper front door: a clear identity, one central visual system, and quick access to the component library.
+            </p>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-3">
+            {featuredCards.map((component, index) => (
               <motion.button
                 key={component.id}
                 type="button"
                 onClick={() => onSelect(component.id)}
                 whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.99 }}
-                className="group overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] p-5 text-left transition hover:border-white/20 hover:bg-white/8"
+                className="group rounded-[26px] border border-white/70 bg-white/65 p-5 text-left shadow-[0_18px_40px_rgba(124,58,237,0.08)] backdrop-blur-xl transition hover:border-violet-200/80 hover:bg-white/80"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex size-11 items-center justify-center rounded-2xl bg-white/10 text-cyan-200">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex size-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500/15 to-sky-500/15 text-indigo-700">
                     {index < 2 ? <WandSparkles className="size-4" /> : <CircleDashed className="size-4" />}
                   </div>
-                  <span
-                    className={
-                      component.status === "Live"
-                        ? "rounded-full bg-emerald-400/12 px-3 py-1 text-[11px] font-medium tracking-[0.18em] text-emerald-200 uppercase"
-                        : "rounded-full bg-white/8 px-3 py-1 text-[11px] font-medium tracking-[0.18em] text-white/45 uppercase"
-                    }
-                  >
-                    {component.status}
-                  </span>
-                </div>
-                <h3 className="mt-5 font-[family:var(--font-heading)] text-2xl font-semibold text-white">
-                  {component.label}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-white/52">{component.description}</p>
-                <div className="mt-6 flex items-center justify-between">
-                  <span className="rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-xs text-white/55">
+                  <span className="rounded-full border border-white/70 bg-white/70 px-3 py-1 text-[11px] tracking-[0.18em] text-slate-600 uppercase">
                     {component.metric}
                   </span>
-                  <span className="inline-flex items-center gap-2 text-sm text-white/70">
-                    Open preview
-                    <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </span>
+                </div>
+                <h3 className="mt-5 font-[family:var(--font-heading)] text-2xl font-semibold text-slate-900">
+                  {component.label}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{component.description}</p>
+                <div className="mt-5 inline-flex items-center gap-2 text-sm text-violet-700">
+                  Open preview
+                  <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
               </motion.button>
             ))}
-          </div>
-
-          <div className="space-y-4">
-            <div className="rounded-[28px] border border-white/10 bg-white/6 p-5">
-              <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Collections</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {["Animated text", "Image galleries", "Landing heroes", "Spec cards"].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-xs text-white/60"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-[28px] border border-white/10 bg-white/6 p-5">
-              <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Library Notes</p>
-              <div className="mt-4 space-y-3">
-                {[
-                  "Built for browsing and quick visual comparison.",
-                  "Each component opens into its own focused preview.",
-                  "Typography and spacing tuned for a design-system feel.",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl border border-white/10 bg-black/10 px-4 py-3 text-sm text-white/58"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -465,12 +600,12 @@ function PulseTextPreview({
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="space-y-4"
     >
-      <div className="rounded-[28px] border border-white/10 bg-white/6 p-5">
-        <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Brand switch</p>
-        <div className="mt-8 flex min-h-28 items-center justify-center rounded-[26px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_40%),rgba(255,255,255,0.04)] px-6 py-8">
+      <div className="rounded-[28px] border border-white/70 bg-white/65 p-5 shadow-[0_18px_40px_rgba(79,70,229,0.08)]">
+        <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Brand switch</p>
+        <div className="mt-8 flex min-h-28 items-center justify-center rounded-[26px] border border-white/70 bg-[radial-gradient(circle_at_top,rgba(79,70,229,0.14),transparent_40%),rgba(255,255,255,0.55)] px-6 py-8">
           <SmartAnimateText
             value={brandValue}
-            className="text-center text-5xl font-semibold tracking-tight text-white md:text-7xl"
+            className="text-center text-5xl font-semibold tracking-tight text-slate-900 md:text-7xl"
             digitClassName="font-[family:var(--font-heading)]"
             direction="dynamic"
             enterBlur={24}
@@ -485,8 +620,8 @@ function PulseTextPreview({
               onClick={() => onBrandChange(item)}
               className={
                 item === brandValue
-                  ? "rounded-full border border-cyan-300/40 bg-cyan-300/14 px-4 py-2 text-sm font-medium text-cyan-100"
-                  : "rounded-full border border-white/10 bg-white/6 px-4 py-2 text-sm font-medium text-white/65 transition hover:border-white/20 hover:bg-white/10"
+                  ? "rounded-full border border-indigo-300/80 bg-indigo-500/15 px-4 py-2 text-sm font-medium text-indigo-700"
+                  : "rounded-full border border-white/70 bg-white/70 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-indigo-200/80 hover:bg-white/90"
               }
             >
               {item}
@@ -495,27 +630,27 @@ function PulseTextPreview({
         </div>
       </div>
 
-      <div className="rounded-[28px] border border-white/10 bg-white/6 p-5">
+      <div className="rounded-[28px] border border-white/70 bg-white/65 p-5 shadow-[0_18px_40px_rgba(79,70,229,0.08)]">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">ABS price motion</p>
-            <p className="mt-2 text-sm text-white/55">Spec based up and down pricing.</p>
+            <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">ABS price motion</p>
+            <p className="mt-2 text-sm text-slate-600">Spec based up and down pricing.</p>
           </div>
-          <span className="rounded-full bg-white/8 px-3 py-1.5 text-xs text-white/60">
+          <span className="rounded-full border border-white/70 bg-white/70 px-3 py-1.5 text-xs text-slate-600">
             {activeSpec.detail}
           </span>
         </div>
-        <div className="mt-8 flex min-h-32 items-center justify-center rounded-[26px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.18),transparent_42%),rgba(255,255,255,0.04)] px-6 py-8">
+        <div className="mt-8 flex min-h-32 items-center justify-center rounded-[26px] border border-white/70 bg-[radial-gradient(circle_at_top,rgba(14,165,233,0.18),transparent_42%),rgba(255,255,255,0.55)] px-6 py-8">
           <div className="text-center">
             <SmartAnimateText
               value={activeSpec.delta}
-              className="justify-center text-6xl font-semibold tracking-tight text-white md:text-8xl"
+              className="justify-center text-6xl font-semibold tracking-tight text-slate-900 md:text-8xl"
               digitClassName="font-[family:var(--font-heading)]"
               direction="dynamic"
               enterBlur={30}
               enterScale={0.84}
             />
-            <p className="mt-3 text-sm text-white/45">price change in thousands</p>
+            <p className="mt-3 text-sm text-slate-500">price change in thousands</p>
           </div>
         </div>
         <div className="mt-5 flex flex-wrap justify-center gap-2">
@@ -526,8 +661,8 @@ function PulseTextPreview({
               onClick={() => onSpecChange(option.id)}
               className={
                 option.id === specId
-                  ? "rounded-full border border-violet-300/30 bg-violet-300/12 px-4 py-2 text-sm font-medium text-violet-100"
-                  : "rounded-full border border-white/10 bg-white/6 px-4 py-2 text-sm font-medium text-white/65 transition hover:border-white/20 hover:bg-white/10"
+                  ? "rounded-full border border-sky-300/80 bg-sky-500/15 px-4 py-2 text-sm font-medium text-sky-700"
+                  : "rounded-full border border-white/70 bg-white/70 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-sky-200/80 hover:bg-white/90"
               }
             >
               {option.label}
@@ -549,12 +684,12 @@ function MorphingTextPreview() {
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="space-y-4"
     >
-      <div className="rounded-[28px] border border-white/10 bg-white/6 p-6">
-        <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Morphing text</p>
-        <div className="mt-6 flex min-h-[260px] items-center justify-center rounded-[26px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.10),transparent_35%),rgba(255,255,255,0.04)] p-6">
+      <div className="rounded-[28px] border border-white/70 bg-white/65 p-6 shadow-[0_18px_40px_rgba(79,70,229,0.08)]">
+        <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Morphing text</p>
+        <div className="mt-6 flex min-h-[260px] items-center justify-center rounded-[26px] border border-white/70 bg-[radial-gradient(circle_at_top,rgba(79,70,229,0.16),transparent_35%),rgba(255,255,255,0.55)] p-6">
           <MorphingText
             texts={morphingTexts}
-            className="font-[family:var(--font-heading)] text-6xl font-semibold tracking-tight text-white md:text-8xl"
+            className="font-[family:var(--font-heading)] text-6xl font-semibold tracking-tight text-slate-900 md:text-8xl"
           />
         </div>
       </div>
@@ -572,18 +707,18 @@ function OrbitalPreview({ wheelScrollRef }: { wheelScrollRef: React.RefObject<HT
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="space-y-4"
     >
-      <div className="rounded-[28px] border border-white/10 bg-white/6 p-5">
+      <div className="rounded-[28px] border border-white/70 bg-white/65 p-5 shadow-[0_18px_40px_rgba(79,70,229,0.08)]">
         <div className="mb-4 flex items-center justify-between gap-3">
           <div>
-            <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Heavy bike gallery</p>
-            <p className="mt-2 text-sm text-white/55">Only the component, fully visible, scroll to orbit.</p>
+            <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Heavy bike gallery</p>
+            <p className="mt-2 text-sm text-slate-600">Only the component, fully visible, scroll to orbit.</p>
           </div>
-          <span className="rounded-full bg-white/8 px-3 py-1.5 text-xs text-white/60">Stock images</span>
+          <span className="rounded-full border border-white/70 bg-white/70 px-3 py-1.5 text-xs text-slate-600">Stock images</span>
         </div>
 
         <div
           ref={wheelScrollRef}
-          className="h-[80vh] min-h-[700px] overflow-y-auto overscroll-y-contain rounded-[28px] border border-white/10 bg-black/15 [scrollbar-gutter:stable] [scroll-behavior:smooth]"
+          className="h-[80vh] min-h-[700px] overflow-y-auto overscroll-y-contain rounded-[28px] border border-white/70 bg-slate-900/95 [scrollbar-gutter:stable] [scroll-behavior:smooth]"
         >
           <OrbitalImageWheel
             images={bikeImages}
@@ -632,7 +767,7 @@ function TiltCardPreview() {
         imageSrc={bikeImages[2].src}
         imageAlt={bikeImages[2].alt}
       >
-        <ul className="space-y-1 text-sm text-white/60">
+        <ul className="space-y-1 text-sm text-slate-600">
           <li>+ Unlimited projects</li>
           <li>+ Motion presets</li>
           <li>+ Priority updates</li>
@@ -652,9 +787,9 @@ function CardStackPreview() {
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="space-y-4 overflow-visible"
     >
-      <div className="rounded-[28px] border border-white/10 bg-white/6 p-5">
-        <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Card stack scroll</p>
-        <p className="mt-2 text-sm text-white/55">Scroll down to see the cards scale and stack.</p>
+      <div className="rounded-[28px] border border-white/70 bg-white/65 p-5 shadow-[0_18px_40px_rgba(79,70,229,0.08)]">
+        <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Card stack scroll</p>
+        <p className="mt-2 text-sm text-slate-600">Scroll down to see the cards scale and stack.</p>
       </div>
       <div className="overflow-visible">
         <CardStackScroll items={stackProjects} />
@@ -673,9 +808,9 @@ function CarouselPreview() {
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="space-y-4"
     >
-      <div className="rounded-[28px] border border-white/10 bg-white/6 p-5">
-        <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Inverted perspective carousel</p>
-        <p className="mt-2 text-sm text-white/55">Swipe visually with navigation and coverflow depth.</p>
+      <div className="rounded-[28px] border border-white/70 bg-white/65 p-5 shadow-[0_18px_40px_rgba(79,70,229,0.08)]">
+        <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Inverted perspective carousel</p>
+        <p className="mt-2 text-sm text-slate-600">Swipe visually with navigation and coverflow depth.</p>
       </div>
       <InvertedPerspectiveCarousel images={bikeImages.map(({ src, alt }) => ({ src, alt }))} />
     </motion.section>
@@ -692,12 +827,12 @@ function InfiniteSliderPreview() {
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="space-y-4"
     >
-      <div className="rounded-[28px] border border-white/10 bg-white/6 p-6">
-        <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Infinite slider</p>
-        <h3 className="mt-3 font-[family:var(--font-heading)] text-3xl font-semibold text-white">
+      <div className="rounded-[28px] border border-white/70 bg-white/65 p-6 shadow-[0_18px_40px_rgba(79,70,229,0.08)]">
+        <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Infinite slider</p>
+        <h3 className="mt-3 font-[family:var(--font-heading)] text-3xl font-semibold text-slate-900">
           Trusted by modern product brands
         </h3>
-        <p className="mt-2 text-sm text-white/55">
+        <p className="mt-2 text-sm text-slate-600">
           Seamless horizontal marquee for logo rails, trust sections, and partner bands.
         </p>
         <div className="mt-6 space-y-4">
@@ -717,15 +852,15 @@ function ComingSoonPreview({ activeId }: { activeId: ComingSoonId }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -18 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="rounded-[28px] border border-white/10 bg-white/6 p-8 text-center"
+      className="rounded-[28px] border border-white/70 bg-white/65 p-8 text-center shadow-[0_18px_40px_rgba(79,70,229,0.08)]"
     >
-      <div className="mx-auto flex size-16 items-center justify-center rounded-full border border-white/10 bg-white/6 text-cyan-200">
+      <div className="mx-auto flex size-16 items-center justify-center rounded-full border border-white/70 bg-white/70 text-indigo-700">
         <CircleDashed className="size-6" />
       </div>
-      <h2 className="mt-6 font-[family:var(--font-heading)] text-4xl font-semibold text-white">
+      <h2 className="mt-6 font-[family:var(--font-heading)] text-4xl font-semibold text-slate-900">
         {components.find((item) => item.id === activeId)?.label}
       </h2>
-      <p className="mt-3 text-white/55">{comingSoonText[activeId]}</p>
+      <p className="mt-3 text-slate-600">{comingSoonText[activeId]}</p>
     </motion.section>
   );
 }
@@ -733,6 +868,7 @@ function ComingSoonPreview({ activeId }: { activeId: ComingSoonId }) {
 export function ComponentBrowser() {
   const [activeId, setActiveId] = useState<ComponentId | null>(null);
   const [query, setQuery] = useState("");
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [brandValue, setBrandValue] = useState<(typeof brandOptions)[number]>("taro");
   const [specId, setSpecId] = useState<(typeof specOptions)[number]["id"]>("standard");
   const wheelScrollRef = useRef<HTMLDivElement>(null);
@@ -750,33 +886,48 @@ export function ComponentBrowser() {
     components.find((component) => component.id === activeId) ?? null;
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden px-4 py-4 text-white md:px-6 md:py-6">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.14),transparent_22%),radial-gradient(circle_at_80%_10%,rgba(168,85,247,0.16),transparent_28%),radial-gradient(circle_at_50%_100%,rgba(244,114,182,0.10),transparent_24%)]" />
-      <div className="pointer-events-none absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]" />
+    <main className="relative min-h-screen overflow-x-hidden px-3 py-3 text-slate-900 md:px-5 md:py-5">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(79,70,229,0.18),transparent_38%),radial-gradient(circle_at_88%_22%,rgba(14,165,233,0.18),transparent_36%),radial-gradient(circle_at_78%_88%,rgba(56,189,248,0.18),transparent_40%)]" />
 
-      <div className="relative mx-auto grid max-w-[1580px] items-start gap-4 lg:grid-cols-[320px_minmax(0,1fr)]">
+      <button
+        type="button"
+        onClick={() => setMobileSidebarOpen(true)}
+        className="fixed top-4 left-4 z-40 inline-flex h-11 items-center gap-2 rounded-full border border-white/70 bg-white/70 px-4 text-sm text-slate-800 shadow-[0_18px_40px_rgba(124,58,237,0.16)] backdrop-blur-xl transition hover:bg-white/90 lg:hidden"
+      >
+        <PanelLeftOpen className="size-4" />
+        Library
+      </button>
+
+      <div className="relative mx-auto flex max-w-[1600px] items-start gap-4">
         <LibrarySidebar
           activeId={activeId}
           options={filteredComponents}
           onSelect={setActiveId}
           query={query}
           onQueryChange={setQuery}
+          mobileOpen={mobileSidebarOpen}
+          onToggleMobile={() => setMobileSidebarOpen((value) => !value)}
         />
+        <div className="min-w-0 flex-1">
 
         <section
           className={
             activeId === "card-stack-scroll"
-              ? "overflow-visible rounded-[34px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-4 shadow-[0_30px_120px_rgba(2,8,23,0.55)] backdrop-blur-2xl md:p-5"
-              : "overflow-hidden rounded-[34px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-4 shadow-[0_30px_120px_rgba(2,8,23,0.55)] backdrop-blur-2xl md:p-5"
+              ? "overflow-visible rounded-[38px] border border-white/50 bg-white/45 p-3 shadow-[0_30px_120px_rgba(124,58,237,0.18)] backdrop-blur-2xl md:p-4"
+              : "overflow-hidden rounded-[38px] border border-white/50 bg-white/45 p-3 shadow-[0_30px_120px_rgba(124,58,237,0.18)] backdrop-blur-2xl md:p-4"
           }
         >
           {!selectedComponent ? (
-            <LandingHub components={filteredComponents} onSelect={setActiveId} />
+            <LandingHub
+              components={filteredComponents}
+              onSelect={setActiveId}
+              onOpenSidebar={() => setMobileSidebarOpen(true)}
+            />
           ) : (
             <div className="space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-3 rounded-[26px] border border-white/10 bg-white/6 px-5 py-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-[26px] border border-white/70 bg-white/65 px-5 py-4 shadow-[0_10px_30px_rgba(124,58,237,0.08)] backdrop-blur-xl">
                 <div className="flex items-center gap-3">
-                  <div className="flex size-11 items-center justify-center rounded-2xl bg-white text-slate-950">
+                  <div className="flex size-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-500 to-sky-500 text-white shadow-[0_10px_30px_rgba(79,70,229,0.35)]">
                     {selectedComponent.status === "Live" ? (
                       <Zap className="size-5" />
                     ) : (
@@ -784,14 +935,14 @@ export function ComponentBrowser() {
                     )}
                   </div>
                   <div>
-                    <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Component Preview</p>
-                    <p className="mt-1 text-2xl font-semibold text-white">{selectedComponent.label}</p>
+                    <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Component Preview</p>
+                    <p className="mt-1 text-2xl font-semibold text-slate-900">{selectedComponent.label}</p>
                   </div>
                 </div>
 
                 <Button
                   variant="outline"
-                  className="h-11 rounded-full border-white/15 bg-white/6 px-5 text-white hover:bg-white/10"
+                  className="h-11 rounded-full border-white/70 bg-white/70 px-5 text-slate-800 shadow-[0_10px_30px_rgba(124,58,237,0.08)] backdrop-blur-xl hover:bg-white/90"
                   onClick={() => setActiveId(null)}
                 >
                   <ChevronLeft className="size-4" />
@@ -809,6 +960,8 @@ export function ComponentBrowser() {
                   />
                 ) : null}
 
+                {activeId === "logo-loader" ? <LogoLoaderPreview /> : null}
+
                 {activeId === "orbital-image-wheel" ? (
                   <OrbitalPreview wheelScrollRef={wheelScrollRef} />
                 ) : null}
@@ -824,6 +977,7 @@ export function ComponentBrowser() {
                 {activeId === "infinite-slider" ? <InfiniteSliderPreview /> : null}
 
                 {activeId &&
+                activeId !== "logo-loader" &&
                 activeId !== "smart-animate-text" &&
                 activeId !== "orbital-image-wheel" &&
                 activeId !== "morphing-text" &&
@@ -836,22 +990,8 @@ export function ComponentBrowser() {
               </AnimatePresence>
             </div>
           )}
-
-          <div className="mt-4 flex flex-wrap gap-2">
-            {["library", "browse", "preview", "motion"].map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-xs text-white/55"
-              >
-                {tag}
-              </span>
-            ))}
-            <span className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/8 px-3 py-1.5 text-xs text-cyan-100">
-              <Sparkles className="size-3.5" />
-              Motion Atelier library
-            </span>
-          </div>
         </section>
+        </div>
       </div>
     </main>
   );

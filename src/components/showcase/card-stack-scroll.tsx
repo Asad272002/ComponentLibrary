@@ -29,27 +29,27 @@ function StackCard({ item, index, progress, range, targetScale }: StackCardProps
           scale,
           top: `calc(-5vh + ${index * 20 + 250}px)`,
         }}
-        className="relative -top-1/4 flex h-[320px] w-[min(840px,92vw)] origin-top flex-col overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04))] shadow-[0_30px_90px_rgba(2,8,23,0.32)]"
+        className="relative -top-1/4 flex h-[320px] w-[min(840px,92vw)] origin-top flex-col overflow-hidden rounded-[30px] border border-white/70 bg-white/80 shadow-[0_30px_90px_rgba(79,70,229,0.20)]"
       >
         <div className="grid h-full gap-4 p-5 lg:grid-cols-[1fr_320px]">
-          <div className="flex flex-col justify-between rounded-[26px] border border-white/10 bg-black/12 p-6">
+          <div className="flex flex-col justify-between rounded-[26px] border border-white/70 bg-white/70 p-6">
             <div>
-              <p className="text-[11px] tracking-[0.24em] text-white/35 uppercase">Project {index + 1}</p>
-              <h3 className="mt-4 font-[family:var(--font-heading)] text-4xl font-semibold text-white">
+              <p className="text-[11px] tracking-[0.24em] text-slate-500 uppercase">Project {index + 1}</p>
+              <h3 className="mt-4 font-[family:var(--font-heading)] text-4xl font-semibold text-slate-900">
                 {item.title}
               </h3>
-              <p className="mt-3 max-w-md text-sm leading-6 text-white/55">{item.subtitle}</p>
+              <p className="mt-3 max-w-md text-sm leading-6 text-slate-600">{item.subtitle}</p>
             </div>
 
             <div
-              className="mt-6 rounded-[24px] border border-white/10 px-5 py-4 text-sm text-white/70"
+              className="mt-6 rounded-[24px] border border-white/70 px-5 py-4 text-sm text-slate-700"
               style={{ background: item.accent }}
             >
               Scroll-driven stack scaling with smooth layered transforms.
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[26px] border border-white/10 bg-black/12">
+          <div className="relative overflow-hidden rounded-[26px] border border-white/70 bg-white/60">
             <Image
               src={item.src}
               alt={item.title}
