@@ -116,14 +116,14 @@ export function InvertedPerspectiveCarousel({
           <div className="flex gap-2">
             <Button
               variant="outline"
-              className="rounded-full border-white/10 bg-white/6 text-white hover:bg-white/10"
+              className="rounded-full border-white/70 bg-white/70 text-slate-700 shadow-[0_10px_30px_rgba(79,70,229,0.08)] hover:bg-white/90"
               onClick={() => setActiveIndex((current) => wrapIndex(current - 1, images.length))}
             >
               <ChevronLeft className="size-4" />
             </Button>
             <Button
               variant="outline"
-              className="rounded-full border-white/10 bg-white/6 text-white hover:bg-white/10"
+              className="rounded-full border-white/70 bg-white/70 text-slate-700 shadow-[0_10px_30px_rgba(79,70,229,0.08)] hover:bg-white/90"
               onClick={() => setActiveIndex((current) => wrapIndex(current + 1, images.length))}
             >
               <ChevronRight className="size-4" />
@@ -138,7 +138,7 @@ export function InvertedPerspectiveCarousel({
                 onClick={() => setActiveIndex(index)}
                 className={cn(
                   "size-2.5 rounded-full transition",
-                  index === activeIndex ? "bg-white" : "bg-white/25"
+                  index === activeIndex ? "bg-slate-900" : "bg-slate-300"
                 )}
               />
             ))}

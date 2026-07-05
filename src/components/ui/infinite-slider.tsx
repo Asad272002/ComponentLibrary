@@ -50,12 +50,12 @@ export function InfiniteSlider({
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-full border border-white/10 bg-white/6 px-3 py-3",
+        "group relative overflow-hidden rounded-full border border-white/60 bg-white/55 px-4 py-3",
         className
       )}
     >
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#060b17] to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[#060b17] to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white/95 via-white/55 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white/95 via-white/55 to-transparent" />
 
       <div
         className={cn(
@@ -69,7 +69,7 @@ export function InfiniteSlider({
             <span
               key={`${item}-${index}`}
               className={cn(
-                "shrink-0 rounded-full border border-white/10 bg-white/8 px-4 py-2 text-sm text-white/70",
+                "shrink-0 rounded-full border border-white/70 bg-white/75 px-4 py-2 text-sm font-medium text-slate-800",
                 itemClassName
               )}
             >
@@ -80,12 +80,12 @@ export function InfiniteSlider({
               key={`${item.label}-${index}`}
               href={item.href ?? "#"}
               className={cn(
-                "inline-flex shrink-0 items-center gap-3 rounded-full border border-white/10 bg-white/8 px-4 py-2.5 text-sm text-white/78 transition hover:border-white/20 hover:bg-white/10",
+                "inline-flex shrink-0 items-center gap-2.5 rounded-full border border-white/70 bg-white/75 px-4 py-2.5 text-sm font-medium text-slate-800 transition hover:border-indigo-200/80 hover:bg-white/90",
                 itemClassName
               )}
             >
               {item.iconPath ? (
-                <span className="flex size-8 items-center justify-center rounded-full bg-black/20">
+                <span className="flex size-7 items-center justify-center rounded-full bg-white shadow-[0_4px_10px_rgba(79,70,229,0.08)]">
                   <svg
                     viewBox={item.iconViewBox ?? "0 0 24 24"}
                     className="size-4"
@@ -96,7 +96,7 @@ export function InfiniteSlider({
                   </svg>
                 </span>
               ) : null}
-              <span className="font-medium tracking-[0.02em]">{item.label}</span>
+              <span className="font-medium tracking-[0.01em]">{item.label}</span>
             </a>
           )
         ))}

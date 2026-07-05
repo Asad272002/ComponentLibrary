@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Manrope, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import "../components/logo-loader.css";
 
 const manrope = Manrope({
   variable: "--font-sans",

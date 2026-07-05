@@ -1,31 +1,20 @@
 "use client";
 
-import { Float, MeshDistortMaterial, Sparkles } from "@react-three/drei";
+import { ContactShadows, Environment, Float, Sparkles } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useMemo, useRef } from "react";
 
-function HeroGeometry() {
+function MetallicKnot() {
   const groupRef = useRef<THREE.Group>(null);
-  const orbRef = useRef<THREE.Mesh>(null);
 
-  const accents = useMemo(
-    () => [
-      { position: [-2.6, 1.3, -0.8] as [number, number, number], scale: 0.34, color: "#67e8f9" },
-      { position: [2.4, -1.4, 0.5] as [number, number, number], scale: 0.44, color: "#a78bfa" },
-      { position: [1.7, 1.8, -1.2] as [number, number, number], scale: 0.24, color: "#f472b6" },
-      { position: [-1.2, -1.9, 0.8] as [number, number, number], scale: 0.28, color: "#22d3ee" },
-    ],
-    []
-  );
-
-  useFrame((state, delta) => {
+  useFrame((state) => {
     if (groupRef.current) {
-      const targetY = state.pointer.x * 0.5;
-      const targetX = state.pointer.y * 0.25;
+      const targetY = state.pointer.x * 0.35;
+      const targetX = -state.pointer.y * 0.18;
       groupRef.current.rotation.y = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
-        targetY,
+        targetY + state.clock.elapsedTime * 0.15,
         0.06
       );
       groupRef.current.rotation.x = THREE.MathUtils.lerp(
@@ -33,92 +22,105 @@ function HeroGeometry() {
         targetX,
         0.06
       );
-      groupRef.current.rotation.z += delta * 0.08;
-    }
-
-    if (orbRef.current) {
-      orbRef.current.rotation.x += delta * 0.35;
-      orbRef.current.rotation.y -= delta * 0.28;
     }
   });
 
   return (
     <group ref={groupRef}>
-      <Float speed={1.2} rotationIntensity={0.8} floatIntensity={1.5}>
-        <mesh ref={orbRef} scale={1.45}>
-          <icosahedronGeometry args={[1.3, 20]} />
-          <MeshDistortMaterial
-            color="#8b5cf6"
-            metalness={0.55}
-            roughness={0.12}
-            distort={0.38}
-            speed={2}
-            transmission={0.55}
-            thickness={1.1}
+      <Float speed={1.1} rotationIntensity={0.6} floatIntensity={0.9}>
+        <mesh castShadow receiveShadow>
+          <torusKnotGeometry args={[1.05, 0.34, 320, 48, 2, 3]} />
+          <meshPhysicalMaterial
+            color="#f4f4f8"
+            metalness={1}
+            roughness={0.08}
             clearcoat={1}
-            clearcoatRoughness={0.05}
+            clearcoatRoughness={0.04}
+            envMapIntensity={1.6}
           />
         </mesh>
       </Float>
 
-      <Float speed={1.6} rotationIntensity={1.4} floatIntensity={1.1}>
-        <mesh position={[0, 0, -1.8]} rotation={[0.8, 0.2, 0.6]}>
-          <torusKnotGeometry args={[1.9, 0.15, 220, 28, 2, 3]} />
-          <meshStandardMaterial
-            color="#67e8f9"
-            emissive="#0f172a"
-            emissiveIntensity={1.15}
-            metalness={0.9}
-            roughness={0.16}
-          />
+      <Float speed={0.9} rotationIntensity={0.5} floatIntensity={0.7}>
+        <mesh position={[1.2, 0.8, -0.6]} rotation={[0.6, 0.2, 0.4]} scale={0.18}>
+          <icosahedronGeometry args={[1, 2]} />
+          <meshStandardMaterial color="#a78bfa" metalness={0.3} roughness={0.2} />
         </mesh>
       </Float>
 
-      {accents.map((accent) => (
-        <Float
-          key={accent.color + accent.position.join("-")}
-          speed={1.4}
-          rotationIntensity={1.1}
-          floatIntensity={1.7}
-        >
-          <mesh position={accent.position} scale={accent.scale}>
-            <sphereGeometry args={[1, 32, 32]} />
-            <meshStandardMaterial
-              color={accent.color}
-              emissive={accent.color}
-              emissiveIntensity={0.65}
-              metalness={0.25}
-              roughness={0.18}
-            />
-          </mesh>
-        </Float>
-      ))}
+      <Float speed={1.3} rotationIntensity={0.7} floatIntensity={1.1}>
+        <mesh position={[-1.1, -0.7, 0.4]} rotation={[0.4, 0.6, 0.1]} scale={0.12}>
+          <sphereGeometry args={[1, 32, 32]} />
+          <meshStandardMaterial color="#38bdf8" metalness={0.2} roughness={0.3} />
+        </mesh>
+      </Float>
+
+      <Float speed={1.5} rotationIntensity={0.9} floatIntensity={1.3}>
+        <mesh position={[0.9, -1.1, 0.2]} scale={0.1}>
+          <sphereGeometry args={[1, 32, 32]} />
+          <meshStandardMaterial color="#22c55e" metalness={0.2} roughness={0.3} />
+        </mesh>
+      </Float>
+
+      <Float speed={1.4} rotationIntensity={0.8} floatIntensity={1}>
+        <mesh position={[-0.8, 1.2, 0.1]} scale={0.09}>
+          <sphereGeometry args={[1, 32, 32]} />
+          <meshStandardMaterial color="#f59e0b" metalness={0.25} roughness={0.3} />
+        </mesh>
+      </Float>
 
       <Sparkles
-        count={120}
-        scale={[7.5, 5, 7.5]}
-        size={4}
-        speed={0.35}
-        opacity={0.75}
-        color="#c4b5fd"
+        count={70}
+        scale={[5, 4, 5]}
+        size={3}
+        speed={0.25}
+        opacity={0.6}
+        color="#6366f1"
       />
     </group>
   );
 }
 
 export function ShowcaseScene() {
+  const lighting = useMemo(
+    () => ({
+      sun: [4, 5, 3] as [number, number, number],
+      rim: [-4, 2, -3] as [number, number, number],
+    }),
+    []
+  );
+
   return (
-    <div className="relative h-[360px] overflow-hidden rounded-[32px] border border-white/10 bg-[radial-gradient(circle_at_top,#1e293b_0%,#0b1120_48%,#050816_100%)] shadow-[0_30px_120px_rgba(8,15,40,0.65)] md:h-[420px]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(103,232,249,0.16),transparent_35%),radial-gradient(circle_at_80%_30%,rgba(168,85,247,0.22),transparent_32%),radial-gradient(circle_at_50%_100%,rgba(34,211,238,0.12),transparent_40%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/8 to-transparent" />
-      <Canvas camera={{ position: [0, 0, 6.5], fov: 42 }} dpr={[1, 1.5]}>
-        <color attach="background" args={["#050816"]} />
-        <fog attach="fog" args={["#050816", 8, 18]} />
-        <ambientLight intensity={1.2} />
-        <directionalLight position={[4, 6, 5]} intensity={2.8} color="#c4b5fd" />
-        <pointLight position={[-4, -2, 3]} intensity={32} color="#67e8f9" distance={12} />
-        <pointLight position={[3, 1, -2]} intensity={24} color="#f472b6" distance={12} />
-        <HeroGeometry />
+    <div className="relative h-[360px] overflow-hidden rounded-[32px] border border-white/60 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.95),rgba(244,240,255,0.6)_60%,rgba(232,222,255,0.35)_100%)] shadow-[0_30px_120px_rgba(124,58,237,0.18)] md:h-[440px]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(124,58,237,0.16),transparent_40%),radial-gradient(circle_at_82%_30%,rgba(244,114,182,0.18),transparent_38%),radial-gradient(circle_at_50%_100%,rgba(56,189,248,0.18),transparent_40%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/70 to-transparent" />
+      <Canvas
+        camera={{ position: [0, 0.2, 5.2], fov: 38 }}
+        dpr={[1, 1.8]}
+        shadows
+        gl={{ antialias: true, alpha: true }}
+      >
+        <ambientLight intensity={0.55} />
+        <directionalLight
+          position={lighting.sun}
+          intensity={2.2}
+          color="#ffffff"
+          castShadow
+          shadow-mapSize={[1024, 1024]}
+        />
+        <directionalLight position={lighting.rim} intensity={0.9} color="#60a5fa" />
+        <pointLight position={[-2.5, -1.5, 2]} intensity={14} color="#6366f1" distance={9} />
+        <pointLight position={[2.5, 1.2, -1]} intensity={12} color="#0ea5e9" distance={9} />
+        <MetallicKnot />
+        <ContactShadows
+          position={[0, -1.4, 0]}
+          opacity={0.35}
+          scale={6}
+          blur={2.2}
+          far={3}
+          color="#3b82f6"
+        />
+        <Environment preset="city" />
       </Canvas>
     </div>
   );

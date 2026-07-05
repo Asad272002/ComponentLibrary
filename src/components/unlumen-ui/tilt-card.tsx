@@ -41,14 +41,14 @@ export function TiltCard({
   const Wrapper = href ? motion.a : motion.div;
   const badgeTone =
     badgeVariant === "warning"
-      ? "bg-amber-400/14 text-amber-100"
-      : "bg-emerald-400/14 text-emerald-100";
+      ? "bg-amber-500/15 text-amber-700"
+      : "bg-emerald-500/15 text-emerald-700";
 
   return (
     <Wrapper
       href={href}
       className={cn(
-        "group relative block overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04))] p-6 text-white shadow-[0_30px_80px_rgba(2,8,23,0.34)]",
+        "group relative block overflow-hidden rounded-[30px] border border-white/70 bg-white/75 p-6 text-slate-900 shadow-[0_30px_80px_rgba(79,70,229,0.16)]",
         className
       )}
       style={{
@@ -75,14 +75,14 @@ export function TiltCard({
       transition={{ duration: 0.25 }}
     >
       <motion.div className="pointer-events-none absolute inset-0" style={{ background: glow }} />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(103,232,249,0.08),transparent_35%,rgba(168,85,247,0.10))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(79,70,229,0.10),transparent_35%,rgba(14,165,233,0.10))]" />
 
       <div className="relative flex h-full min-h-[320px] flex-col justify-between [transform:translateZ(40px)]">
         <div className="flex items-start justify-between gap-3">
           {(price || badgeLabel) ? (
-            <div className="inline-flex overflow-hidden rounded-full border border-white/10">
+            <div className="inline-flex overflow-hidden rounded-full border border-white/70">
               {price ? (
-                <span className="bg-white px-3 py-1.5 text-sm font-medium text-slate-950">
+                <span className="bg-slate-900 px-3 py-1.5 text-sm font-medium text-white">
                   {price}
                 </span>
               ) : null}
@@ -95,7 +95,7 @@ export function TiltCard({
           ) : <span />}
 
           {href ? (
-            <span className="inline-flex size-10 items-center justify-center rounded-full border border-white/10 bg-white/8 text-white/70">
+            <span className="inline-flex size-10 items-center justify-center rounded-full border border-white/70 bg-white/70 text-slate-700">
               <ArrowUpRight className="size-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </span>
           ) : null}
@@ -106,14 +106,14 @@ export function TiltCard({
             {title}
           </h3>
           {description ? (
-            <p className="mt-3 text-sm leading-6 text-white/60">{description}</p>
+            <p className="mt-3 text-sm leading-6 text-slate-600">{description}</p>
           ) : null}
           {children ? <div className="mt-5">{children}</div> : null}
         </div>
 
         {imageSrc ? (
           <motion.div
-            className="pointer-events-none absolute -right-8 top-[4.5rem] h-52 w-72 overflow-hidden rounded-[26px] border border-white/10 shadow-[0_28px_70px_rgba(2,8,23,0.45)]"
+            className="pointer-events-none absolute -right-8 top-[4.5rem] h-52 w-72 overflow-hidden rounded-[26px] border border-white/70 shadow-[0_28px_70px_rgba(79,70,229,0.28)]"
             style={{ rotate: -5 }}
             whileHover={{ rotate: -3, y: -4 }}
           >
